@@ -11,7 +11,9 @@ import SwiftUI
 struct PhotonApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationView{
+                ListView()
+            }
         }
     }
 }

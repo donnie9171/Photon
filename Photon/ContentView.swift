@@ -1,26 +1,42 @@
-//
-//  ContentView.swift
-//  Photon
-//
-//  Created by kang enoch on 2025/4/18.
-//
-
 import SwiftUI
 
-struct ContentView: View {
+struct DetectScrollPosition: View {
+    @State private var scrollPosition: CGPoint = .zero
+    
     var body: some View {
-        VStack {
-            Image(systemName: "sparkle")
-                .imageScale(.large)
-                .symbolEffect(.pulse, isActive: true)
-            Text("Brighter Each Day!")
-                .fontWeight(.bold)
+        NavigationView {
+            ScrollView {
+                VStack {
+                    ForEach((1...50), id: \.self) { row in
+                        Text("Row \(row)")
+                            .frame(height: 30)
+                            .id(row)
+                    }
+                }
+                .background(GeometryReader { geometry in
+                    Color.clear
+                        .preference(key: ScrollOffsetPreferenceKey.self, value: geometry.frame(in: .named("scroll")).origin)
+                })
+                .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
+                    self.scrollPosition = value
+                }
+            }
+            .coordinateSpace(name: "scroll")
+            .navigationTitle("Scroll offset: \(scrollPosition.y)")
+            .navigationBarTitleDisplayMode(.inline)
         }
-        .padding()
-        .foregroundColor(.orange)
     }
 }
 
-#Preview {
-    ContentView()
+struct DetectScrollPosition_Previews: PreviewProvider {
+    static var previews: some View {
+        DetectScrollPosition()
+    }
+}
+
+struct ScrollOffsetPreferenceKey: PreferenceKey {
+    static var defaultValue: CGPoint = .zero
+
+    static func reduce(value: inout CGPoint, nextValue: () -> CGPoint) {
+    }
 }
