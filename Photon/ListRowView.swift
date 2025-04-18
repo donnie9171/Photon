@@ -10,12 +10,14 @@ import SwiftUI
 struct ListRowView: View {
     
     let title: String
+    let id: Int
     
     var body: some View {
         HStack{
             VStack (alignment: .leading){
                 HStack{
                     Image(systemName: "sparkle")
+                        .symbolEffect(.pulse, isActive: true)
                         .foregroundStyle(Color("AccentColor"))
                     Text(title).font(.headline)
                 }
@@ -25,10 +27,11 @@ struct ListRowView: View {
                     Text("x1").font(.subheadline)
                 }
             }
-        }
+        }.padding()
+        Divider()
     }
 }
 
 #Preview {
-    ListRowView(title: "Pushups")
+    ListRowView(title: "Pushups", id: 0)
 }
